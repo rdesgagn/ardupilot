@@ -16,7 +16,7 @@
   Simulator for the Generic Chinese Sonar rangefinder : A02YYUW; ME007YS
 */
 
-#include "SIM_RF_GenericCSonar_Serial.h"
+#include "SIM_RF_SinoSonar_Serial.h"
 
 #include <GCS_MAVLink/GCS.h>
 #include <stdio.h>
@@ -24,7 +24,7 @@
 
 using namespace SITL;
 
-uint32_t RF_GenericCSonar_Serial::packet_for_alt(uint16_t alt_cm, uint8_t *buffer, uint8_t buflen)
+uint32_t RF_SinoSonar_Serial::packet_for_alt(uint16_t alt_cm, uint8_t *buffer, uint8_t buflen)
 {
     buffer[0] = 0xFF;
     buffer[1] = (alt_cm * 10) >> 8;

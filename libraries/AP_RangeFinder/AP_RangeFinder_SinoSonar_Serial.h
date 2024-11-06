@@ -2,12 +2,12 @@
 
 #include "AP_RangeFinder_config.h"
 
-#if AP_RANGEFINDER_GENERICCSONAR_SERIAL_ENABLED
+#if AP_RANGEFINDER_SINOSONAR_SERIAL_ENABLED
 
 #include "AP_RangeFinder.h"
 #include "AP_RangeFinder_Backend_Serial.h"
 
-class AP_RangeFinder_GenericCSonar_Serial : public AP_RangeFinder_Backend_Serial
+class AP_RangeFinder_SinoSonar_Serial : public AP_RangeFinder_Backend_Serial
 {
 
 public:
@@ -15,7 +15,7 @@ public:
     static AP_RangeFinder_Backend_Serial *create(
         RangeFinder::RangeFinder_State &_state,
         AP_RangeFinder_Params &_params) {
-        return NEW_NOTHROW AP_RangeFinder_GenericCSonar_Serial(_state, _params);
+        return NEW_NOTHROW AP_RangeFinder_SinoSonar_Serial(_state, _params);
     }
 
 protected:
@@ -35,4 +35,4 @@ private:
     uint8_t buf_len = 0;
 };
 
-#endif  // AP_RANGEFINDER_GENERICCSONAR_SERIAL_ENABLED
+#endif  // AP_RANGEFINDER_SINOSONAR_SERIAL_ENABLED

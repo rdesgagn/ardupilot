@@ -13,11 +13,11 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /*
-  driver for GenericCSonar_Serial : ME007YS; A02YYUW;
+  driver for SinoSonar_Serial : ME007YS; A02YYUW;
  */
-#include "AP_RangeFinder_GenericCSonar_Serial.h"
+#include "AP_RangeFinder_SinoSonar_Serial.h"
 
-#if AP_RANGEFINDER_GENERICCSONAR_SERIAL_ENABLED
+#if AP_RANGEFINDER_SINOSONAR_SERIAL_ENABLED
 
 #include <AP_HAL/AP_HAL.h>
 #include <AP_Math/crc.h>
@@ -25,11 +25,11 @@
 
 extern const AP_HAL::HAL& hal;
 
-static constexpr float GENERICCSONAR_SERIAL_MAX_RANGE_M = 4.5;
-static constexpr uint8_t GENERICCSONAR_HEADER = 0xFF;
+static constexpr float SINOSONAR_SERIAL_MAX_RANGE_M = 4.5;
+static constexpr uint8_t SINOSONAR_HEADER = 0xFF;
 
 // read - return last value measured by sensor
-bool AP_RangeFinder_GenericCSonar_Serial::get_reading(float &reading_m)
+bool AP_RangeFinder_SinoSonar_Serial::get_reading(float &reading_m)
 {
     if (uart == nullptr) {
         return false;
@@ -43,7 +43,7 @@ bool AP_RangeFinder_GenericCSonar_Serial::get_reading(float &reading_m)
         if (!uart->read(b)) {
             break;
         }
-        if (buf_len == 0 && b != GENERICCSONAR_HEADER) {
+        if (buf_len == 0 && b != SINOSONAR_HEADER) {
             // discard
             continue;
         }
@@ -56,10 +56,10 @@ bool AP_RangeFinder_GenericCSonar_Serial::get_reading(float &reading_m)
                 continue;
             }
             reading_m = ((buf[1] << 8) + buf[2]) * 0.001;
-            return reading_m <= GENERICCSONAR_SERIAL_MAX_RANGE_M;
+            return reading_m <= SINOSONAR_SERIAL_MAX_RANGE_M;
         }
     }
     return false;
 }
 
-#endif  // AP_RANGEFINDER_GENERICCSONAR_SERIAL_ENABLED
+#endif  // AP_RANGEFINDER_SINOSONAR_SERIAL_ENABLED

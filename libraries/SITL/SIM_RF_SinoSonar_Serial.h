@@ -13,9 +13,9 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /*
-  Simulator for the Lanbao rangefinder
+  Simulator for the sino rangefinder
 
-./Tools/autotest/sim_vehicle.py --gdb --debug -v ArduCopter -A --serial5=sim:genericcsonar_serial --speedup=1
+./Tools/autotest/sim_vehicle.py --gdb --debug -v ArduCopter -A --serial5=sim:sinosonar_serial --speedup=1
 
 param set SERIAL5_PROTOCOL 9
 param set RNGFND1_TYPE 44
@@ -33,7 +33,7 @@ rc 3 1600
 
 namespace SITL {
 
-class RF_GenericCSonar_Serial : public SerialRangeFinder {
+class RF_SinoSonar_Serial : public SerialRangeFinder {
 public:
 
     uint32_t packet_for_alt(uint16_t alt_cm, uint8_t *buffer, uint8_t buflen) override;

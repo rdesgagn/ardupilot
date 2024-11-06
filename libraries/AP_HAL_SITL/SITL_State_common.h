@@ -24,7 +24,7 @@
 #include <SITL/SIM_RF_LightWareSerial.h>
 #include <SITL/SIM_RF_LightWareSerialBinary.h>
 #include <SITL/SIM_RF_Lanbao.h>
-#include <SITL/SIM_RF_GenericCSonar_Serial.h>
+#include <SITL/SIM_RF_SinoSonar_Serial.h>
 #include <SITL/SIM_RF_BLping.h>
 #include <SITL/SIM_RF_LeddarOne.h>
 #include <SITL/SIM_RF_RDS02UF.h>
@@ -167,8 +167,8 @@ public:
     SITL::RF_MAVLink *rf_mavlink;
     // simulated GYUS42v2 rangefinder:
     SITL::RF_GYUS42v2 *gyus42v2;
-    // simulated GenericCSonar_Serial:
-    SITL::RF_GenericCSonar_Serial *generic_c_sonar_serial;
+    // simulated SinoSonar_Serial:
+    SITL::RF_SinoSonar_Serial *sino_sonar_serial;
 
     // simulated Frsky devices
     SITL::Frsky_D *frsky_d;

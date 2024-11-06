@@ -15,7 +15,7 @@
 
 #include "AP_RangeFinder.h"
 
-#include "AP_RangeFinder_GenericCSonar_Serial.h"
+#include "AP_RangeFinder_SinoSonar_Serial.h"
 
 #if AP_RANGEFINDER_ENABLED
 
@@ -47,7 +47,7 @@
 #include "AP_RangeFinder_Benewake_TFMini.h"
 #include "AP_RangeFinder_Benewake_TFMiniPlus.h"
 #include "AP_RangeFinder_PWM.h"
-#include  "AP_RangeFinder_GenericCSonar_Serial.h"
+#include  "AP_RangeFinder_SinoSonar_Serial.h"
 #include "AP_RangeFinder_GYUS42v2.h"
 #include "AP_RangeFinder_HC_SR04.h"
 #include "AP_RangeFinder_Bebop.h"
@@ -516,9 +516,9 @@ void RangeFinder::detect_instance(uint8_t instance, uint8_t& serial_instance)
         break;
 #endif
 
-#if AP_RANGEFINDER_GENERICCSONAR_SERIAL_ENABLED
-    case Type::GENERICCSONAR_SERIAL:
-        serial_create_fn = AP_RangeFinder_GenericCSonar_Serial::create;
+#if AP_RANGEFINDER_SINOSONAR_SERIAL_ENABLED
+    case Type::SINOSONAR_SERIAL:
+        serial_create_fn = AP_RangeFinder_SinoSonar_Serial::create;
         break;
 #endif
 #if AP_RANGEFINDER_GYUS42V2_ENABLED
