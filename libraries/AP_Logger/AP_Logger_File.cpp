@@ -941,6 +941,7 @@ void AP_Logger_File::io_timer(void)
         // least once per 2 seconds if data is available
         return;
     }
+
     if (tnow - _free_space_last_check_time > _free_space_check_interval) {
         _free_space_last_check_time = tnow;
         last_io_operation = "disk_space_avail";
@@ -999,6 +1000,12 @@ void AP_Logger_File::io_timer(void)
         _last_write_ms = tnow;
         _write_offset += nwritten;
         _writebuf.advance(nwritten);
+
+        /*
+          fsync on littlefs is extremely expensive (20% CPU on an H7) and not
+          required since the whole point of the filesystem is to avoid corruption
+         */
+#if !AP_FILESYSTEM_LITTLEFS_ENABLED
         /*
           the best strategy for minimizing corruption on microSD cards
           seems to be to write in 4k chunks and fsync the file on each
@@ -1010,6 +1017,7 @@ void AP_Logger_File::io_timer(void)
         AP::FS().fsync(_write_fd);
         last_io_operation = "";
 #endif
+#endif // AP_FILESYSTEM_LITTLEFS_ENABLED
 
 #if AP_RTC_ENABLED && CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS
         // ChibiOS does not update mtime on writes, so if we opened

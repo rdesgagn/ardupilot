@@ -125,7 +125,11 @@ private:
     // data and failures-to-boot.
     uint32_t _free_space_last_check_time; // milliseconds
     const uint32_t _free_space_check_interval = 1000UL; // milliseconds
+#if AP_FILESYSTEM_LITTLEFS_ENABLED
+    const uint32_t _free_space_min_avail = 4096; // bytes
+#else
     const uint32_t _free_space_min_avail = 8388608; // bytes
+#endif
 
     // semaphore mediates access to the ringbuffer
     HAL_Semaphore semaphore;
