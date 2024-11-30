@@ -23,6 +23,7 @@
 #include "../AP_Bootloader/app_comms.h"
 #include <AP_CheckFirmware/AP_CheckFirmware.h>
 #include "hwing_esc.h"
+#include "xckj_esc.h"
 #include <AP_CANManager/AP_CAN.h>
 #include <AP_CANManager/AP_SLCANIface.h>
 #include <AP_Scripting/AP_Scripting.h>

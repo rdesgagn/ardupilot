@@ -1124,17 +1124,14 @@ void AP_DroneCAN::SRV_push_servos()
 
     if (_ESC_armed_mask != 0) {
         // push ESCs as fast as we can
-#if AP_DRONECAN_HOBBYWING_ESC_SUPPORT
         if (option_is_set(Options::USE_HOBBYWING_ESC)) {
             SRV_send_esc_hobbywing();
-        } else
-#endif
-#if AP_DRONECAN_XCKJ_ESC_SUPPORT
-        if (option_is_set(Options::USE_XCKJ_ESC))
+        }
+        else if (option_is_set(Options::USE_XCKJ_ESC))
         {
             SRV_send_esc_xckj();
-        } else
-#endif
+        } 
+        else
         {
             SRV_send_esc();
         }
