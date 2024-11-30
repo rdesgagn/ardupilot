@@ -289,7 +289,7 @@ struct dirent *AP_Filesystem_FlashMemory_LittleFS::readdir(void *ptr)
     pair->entry.d_seekoff++;
 #endif
 
-    strncpy(pair->entry.d_name, info.name, sizeof(pair->entry.d_name));
+    strncpy(pair->entry.d_name, info.name, MIN(strlen(info.name)+1, sizeof(pair->entry.d_name)));
 #if CONFIG_HAL_BOARD == HAL_BOARD_LINUX || CONFIG_HAL_BOARD == HAL_BOARD_SITL
     pair->entry.d_namlen = strlen(info.name);
 #endif
