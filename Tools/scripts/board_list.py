@@ -181,6 +181,7 @@ class BoardList(object):
             "f103-HWESC",
             "f103-Trigger",
             "G4-ESC",
+            "f103-XCESC",
         ]
         ret = []
         for x in self.boards:

@@ -35,6 +35,10 @@
 #define HAL_PERIPH_HWESC_SERIAL_PORT 3
 #endif
 
+#ifndef HAL_PERIPH_XCESC_SERIAL_PORT
+#define HAL_PERIPH_XCESC_SERIAL_PORT 3
+#endif
+
 // not only will the code not compile without features this enables,
 // but it forms part of a series of measures to give a robust recovery
 // mechanism on AP_Periph if a bad flash occurs.
@@ -271,6 +275,10 @@ void AP_Periph_FW::init()
 
 #ifdef HAL_PERIPH_ENABLE_HWESC
     hwesc_telem.init(hal.serial(HAL_PERIPH_HWESC_SERIAL_PORT));
+#endif
+
+#ifdef HAL_PERIPH_ENABLE_XCESC
+    hwesc_telem.init(hal.serial(HAL_PERIPH_XCESC_SERIAL_PORT));
 #endif
 
 #ifdef HAL_PERIPH_ENABLE_ESC_APD
