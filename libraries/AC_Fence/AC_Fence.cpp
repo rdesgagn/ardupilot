@@ -250,16 +250,17 @@ uint8_t AC_Fence::enable(bool value, uint8_t fence_types, bool update_auto_mask)
         enabled_fences &= ~fences;
     }
 
-    // fences that were manually changed are no longer eligible for auto-enablement or disablement
-    if (update_auto_mask) {
-        _auto_enable_mask &= ~fences;
-    }
-
     uint8_t fences_to_change = _enabled_fences ^ enabled_fences;
 
     if (!fences_to_change) {
         return 0;
     }
+
+    // fences that were manually changed are no longer eligible for auto-enablement or disablement
+    if (update_auto_mask) {
+        _auto_enable_mask &= ~fences_to_change;
+    }
+
 #if HAL_LOGGING_ENABLED
     AP::logger().Write_Event(value ? LogEvent::FENCE_ENABLE : LogEvent::FENCE_DISABLE);
     if (fences_to_change & AC_FENCE_TYPE_ALT_MAX) {
@@ -469,8 +470,20 @@ bool AC_Fence::pre_arm_check(char *failure_msg, const uint8_t failure_msg_len) c
         return false;
     }
 
+    auto breached_fences = _breached_fences;
+    if (auto_enabled() == AC_Fence::AutoEnable::ONLY_WHEN_ARMED) {
+        Location loc;
+        if (!AP::ahrs().get_location(loc)) {
+            hal.util->snprintf(failure_msg, failure_msg_len, "Fence requires position");
+            return false;
+        }
+        if (_poly_loader.breached(loc)) {
+            breached_fences |= AC_FENCE_TYPE_POLYGON;
+        }
+    }
+
     // check no limits are currently breached
-    if (_breached_fences) {
+    if (breached_fences) {
         char msg[MAVLINK_MSG_STATUSTEXT_FIELD_TEXT_LEN+1];
         ExpandingString e(msg, MAVLINK_MSG_STATUSTEXT_FIELD_TEXT_LEN+1);
         AC_Fence::get_fence_names(_breached_fences, e);
