@@ -89,21 +89,27 @@ void AP_CRSF_Telem::setup_wfq_scheduler(void)
     // priority[i] = 1/_scheduler.packet_weight[i]
     // rate[i] = LinkRate * ( priority[i] / (sum(priority[1-n])) )
 
+    uint8_t sensors = 0;
+#define ADD_SENSOR(num, t1, t2) add_scheduler_entry(t1, t2); sensors++
     // CRSF telemetry rate is 150Hz (4ms) max, so these rates must fit
-    add_scheduler_entry(50, 100);   // heartbeat        10Hz
-    add_scheduler_entry(5, 20);     // parameters       50Hz (generally not active unless requested by the TX)
-    add_scheduler_entry(50, 200);   // baro_vario        5Hz
-    add_scheduler_entry(50, 120);   // Attitude and compass 8Hz
-    add_scheduler_entry(200, 1000); // VTX parameters    1Hz
-    add_scheduler_entry(1300, 500); // battery           2Hz
-    add_scheduler_entry(550, 280);  // GPS               3Hz
-    add_scheduler_entry(550, 500);  // flight mode       2Hz
-    add_scheduler_entry(5000, 100); // passthrough       max 10Hz
-    add_scheduler_entry(5000, 500); // status text       max 2Hz
-    add_scheduler_entry(5, 20);     // command          50Hz (generally not active unless requested by the TX)
-    add_scheduler_entry(5, 500);    // version ping      2Hz (only active at startup)
-    add_scheduler_entry(5, 100);    // device ping      10Hz (only active during TX loss, also see CRSF_RX_TIMEOUT)
+    ADD_SENSOR(HEARTBEAT, 50, 100);         // heartbeat        10Hz
+    ADD_SENSOR(PARAMETERS, 5, 20);          // parameters       50Hz (generally not active unless requested by the TX)
+    ADD_SENSOR(BARO_VARIO, 50, 200);        // baro_vario        5Hz
+    ADD_SENSOR(VARIO, 50, 200);             // vario             5Hz
+    ADD_SENSOR(ATTITUDE, 50, 120);          // Attitude and compass 8Hz
+    ADD_SENSOR(VTX_PARAMETERS, 200, 1000);  // VTX parameters    1Hz
+    ADD_SENSOR(BATTERY, 1300, 500);         // battery           2Hz
+    ADD_SENSOR(GPS, 550, 280);              // GPS               3Hz
+    ADD_SENSOR(FLIGHT_MODE, 550, 500);      // flight mode       2Hz
+    ADD_SENSOR(PASSTHROUGH, 5000, 100);     // passthrough       max 10Hz
+    ADD_SENSOR(STATUS_TEXT, 5000, 500);     // status text       max 2Hz
+    ADD_SENSOR(GENERAL_COMMAND, 5, 20);     // command          50Hz (generally not active unless requested by the TX)
+    ADD_SENSOR(VERSION_PING, 5, 500);       // version ping      2Hz (only active at startup)
+    ADD_SENSOR(DEVICE_PING, 5, 100);        // device ping      10Hz (only active during TX loss, also see CRSF_RX_TIMEOUT)
     disable_scheduler_entry(DEVICE_PING);
+    if (sensors != NUM_SENSORS) {
+        AP_HAL::panic("CRSF: not all sensors added to scheduler table\n");
+    }
 }
 
 void AP_CRSF_Telem::setup_custom_telemetry()
